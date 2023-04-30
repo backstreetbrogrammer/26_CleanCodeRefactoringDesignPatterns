@@ -41,16 +41,16 @@ new BirthdayWishService().wish(LocalDateTime.of(birthdayDate, birthdayWishTime))
 ```
 
 "The best programs are written so that computing machines can perform them quickly and so that human beings can
-understand them clearly." **~ Donald Knuth**
+understand them clearly." ~ **Donald Knuth**
 
 "Any fool can write code that a computer can understand. Good programmers write code that humans can understand."
-**~ Martin Fowler**
+~ **Martin Fowler**
 
 "We are constantly reading old code as part of the effort to write new code... Therefore, making it easy to read makes
-it easier to write." **~ Robert Martin**
+it easier to write." ~ **Robert Martin**
 
 "Always code as if the guy who ends up maintaining your code will be a violent psychopath who knows where you live."
-**~ John Woods**
+~ **John Woods**
 
 **Dirty code consequences**
 
