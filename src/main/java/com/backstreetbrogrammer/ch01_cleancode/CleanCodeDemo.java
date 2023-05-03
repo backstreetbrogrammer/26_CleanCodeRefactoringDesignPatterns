@@ -12,7 +12,7 @@ public class CleanCodeDemo {
         Calendar c = Calendar.getInstance();
         c.set(123, 5, 26, 0, 0, 0);
         c.add(13, 60); // adds one minute
-        //new BirthdayWishService().wish(c.getTime());
+        //new Service().wish(c.getTime());
         System.out.println(c.getTime());
     }
 

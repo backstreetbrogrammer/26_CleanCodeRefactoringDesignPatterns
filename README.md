@@ -29,7 +29,7 @@ Bad code:
 Calendar c = Calendar.getInstance();
 c.set(123, 5, 26, 0, 0, 0);
 c.add(13, 60); // adds one minute
-new BirthdayWishService().wish(c.getTime());
+new Service().wish(c.getTime());
 ```
 
 Clean code:
@@ -82,10 +82,7 @@ House, WikiPage, Account, AddressParser, OrderAlgo, EmailSender etc.
 
 It should be **specific** as well.
 
-For example, class CommonUtils contains util methods for "anything" (number, String, time, etc.), and it is too broad.
-
-It breaks the SRP (Single Responsibility Principle) rule which is basics of SOLID design principles. It states that a
-class should only have one responsibility and should only have one reason to change.
+For example, class `CommonUtils` contains util methods for "anything" (number, String, time, etc.), and it is too broad.
 
 ```java
 import java.time.Instant;
@@ -120,6 +117,9 @@ public class CommonUtils {
 
 }
 ```
+
+It breaks the **Single Responsibility Principle** rule which is basics of SOLID design principles. It states that a
+class should only have one responsibility and should only have one reason to change.
 
 So we should break down this class into subclasses with concrete good names: `NumberUtils`, `StringUtils`, `TimeUtils`.
 
@@ -218,4 +218,76 @@ Map<Integer, String> tradeDetails = getStuff(); // correct - tradeDetails clearl
 
 **Method names**
 
+Few guidelines to check:
+
+- name should reveal intent
+- anyone can fully understand functionality from the name
+
+In other words, if we have to look inside the method to understand what it does – the name needs improvement.
+
+Taking the same snippet of code as above, we can rename the `getStuff()` method:
+
+```
+Map<Integer, String> tradeDetails = getTradeDetails();
+```
+
+As methods are actions, we can follow these conventions:
+
+| Verb (do what?) | Noun (to what?) | Method Name (Verb + Noun) |
+|-----------------|-----------------|---------------------------|
+| get             | TradeDetails    | getTradeDetails()         |
+| convert         | Currency        | convertCurrency()         |
+| create          | Order           | createOrder()             |
+| generate        | RandomNumber    | generateRandomNumber()    |
+
+Few more checks while defining a method and its name:
+
+- avoid abbreviations => `getKms()`, `calculateKgs()`, `setLbs()` - do NOT use this
+- avoid spelling errors, otherwise, it will be difficult to search in a large project
+- similar to classes, a method should do only one thing and should only have one reason to change
+- if a method does MORE than the name says or if it has the name which contains "and", "or", "if" => it should be split
+  into smaller methods
+
+For ex:
+
+```
+TradeDetails getTradeDetails() {
+    // query DB
+    // format data
+    // precalculate
+    // convertToLocalCurrency
+}
+```
+
+Here, `getTradeDetails()` method is doing 3 or more independent things but the name only says to get trade details.
+
+Thus, we can easily split this method into multiple smaller methods.
+
+- only query DB should be put in the `getTradeDetails()`
+- new methods for `formatTradeData()`, `precalculateTradeData()`, `convertToLocalCurrency()`
+
+Do NOT use this: `getAndFormatAndPrecalculateAndConvertToLocalCurrencyTradeData()`
+
+There are few exceptions for method names as we just discussed:
+
+- Static factory methods
+- Builder and Fluent design patterns
+- Java Streams
+
+```
+orderList.stream()
+        .map(func1.andThen(func2))
+        .findAny()
+        .orElseThrow(...);
+```
+
+To summarize, naming classes, methods, variables, is one of the most important factors for writing clean code.
+
+|           |                                    |
+|-----------|------------------------------------|
+| Classes   | Single Responsibility and specific |
+| Variables | Descriptive and concise            |
+| Methods   | Reveal intent and no multi-tasking |
+
+#### Constructors 
 
