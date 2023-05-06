@@ -14,6 +14,7 @@ Tools used:
 
 1. Clean code
     - Good names
+    - Good Constructors
 2. Defensive coding
 3. Refactoring
 4. SOLID design principles
@@ -29,7 +30,7 @@ Bad code:
 Calendar c = Calendar.getInstance();
 c.set(123, 5, 26, 0, 0, 0);
 c.add(13, 60); // adds one minute
-new Service().wish(c.getTime());
+new Service().wish(c.getTime()); // Fri Jun 26 00:01:00 CST 123
 ```
 
 Clean code:
@@ -37,7 +38,7 @@ Clean code:
 ```
 final LocalDate birthdayDate = LocalDate.of(2023, Month.JUNE, 26);
 final LocalTime birthdayWishTime = LocalTime.of(0, 1, 0); // hh:mm:ss
-new BirthdayWishService().wish(LocalDateTime.of(birthdayDate, birthdayWishTime));
+new BirthdayWishService().wish(LocalDateTime.of(birthdayDate, birthdayWishTime)); // 2023-06-26T00:01:00
 ```
 
 "The best programs are written so that computing machines can perform them quickly and so that human beings can
@@ -289,5 +290,45 @@ To summarize, naming classes, methods, variables, is one of the most important f
 | Variables | Descriptive and concise            |
 | Methods   | Reveal intent and no multi-tasking |
 
-#### Constructors 
+#### Good Constructors
+
+The most common way to create an object in Java is using `new` operator and call the constructor. Java constructors have
+the same name as Class name. Sometimes it may be difficult to remember which constructor should be called if there are
+overloaded constructors.
+
+**Static factory methods**
+
+Thus, we can also have **static factory methods** instead of constructors with **meaning-full names** to return a new
+object.
+
+For ex: the following static factory method will return an unmodifiable collection object as the name says which is
+clear and clean.
+
+```
+Collections.unmodifiableCollection(...);
+```
+
+Second advantage of static factory methods is that unlike constructors, they are NOT required to create a new object
+each time they are invoked. This allows immutable classes to use pre-constructed instances or to cache instances as they
+are constructed, and dispense then repeatedly to avoid creating unnecessary duplicates improving performance.
+
+For ex: `Boolean.valueOf(boolean)` method never creates an object but just returns the pre-constructed
+instances `Boolean.TRUE` or `Boolean.FALSE` instances.
+
+```
+    public static Boolean valueOf(boolean b) {
+        return (b ? Boolean.TRUE : Boolean.FALSE);
+    }
+```
+
+There are various static factory methods available in Java API, like:
+
+```
+Collections.unmodifiableCollection(...);
+Collections.synchronizedCollection(...);
+Path.of("src","test","resources","tmpFile");
+Optional.empty();
+String.valueOf(true);
+LocalDate.of(2023, Month.JULY, 01);
+```
 
