@@ -332,3 +332,83 @@ String.valueOf(true);
 LocalDate.of(2023, Month.JULY, 01);
 ```
 
+**Constructor Chaining**
+
+Constructor chaining is the process of calling a sequence of constructors. We can do it in two ways:
+
+- by using `this()` keyword for chaining constructors in the same class
+- by using `super()` keyword for chaining constructors from the parent class
+
+For ex: lets take an `Order` class.
+
+```java
+public class Order {
+    protected final Long orderId;
+    protected final String symbol;
+    protected final Integer quantity;
+    protected final String side;
+    protected final String orderType;
+    protected Double price;
+
+    //getters, equals and hashcode
+}
+```
+
+If `orderType` is **market** order, then `price` field is not needed - or, in other words, `price` field is
+**optional**. Other fields are mandatory.
+
+Thus, we can create 2 constructors:
+
+```
+public Order(final Long orderId, final String symbol, final Integer quantity, final String side, 
+             final String orderType) {
+    this(orderId, symbol, quantity, side, orderType, null); // orderType must be market order
+}
+```
+
+```
+public Order(final Long orderId, final String symbol, final Integer quantity, final String side, 
+             final String orderType, Double price) {
+    if("MKT_ORDER".equals(orderType) && price!=null) {
+        throw new IllegalStateException("Market order can not have price");
+    }
+    // construct the object
+}
+```
+
+Using `this()`, we are not duplicating the code for order type check and all checking is done at one place in the second
+constructor => this is called **DRY** (**Don't Repeat Yourself**) principle.
+
+Now let's create a child class of `Order`, which contains an extra field `msgType`.
+
+```java
+public class NewOrder extends Order {
+    private final String msgType; // MsgType = 'D' for new order
+
+    //getters, equals and hashcode
+}
+```
+
+Let's create 2 constructors in a similar way as in the `Order` class:
+
+```
+public NewOrder(final Long orderId, final String symbol, final Integer quantity, final String side, 
+                final String orderType, final String msgType) {
+    this(orderId, symbol, quantity, side, orderType, null, msgType); // orderType must be market order
+}
+```
+
+```
+public NewOrder(final Long orderId, final String symbol, final Integer quantity, final String side, 
+                final String orderType, Double price, final String msgType) {
+    super(orderId, symbol, quantity, side, orderType, price);
+    this.msgType = msgType;
+    // construct the object
+}
+```
+
+Chaining constructors makes code more readable. We don't have to repeat attribute assignments throughout all
+constructors. Instead, we do this in one place.
+
+**Constructor Telescoping**
+
