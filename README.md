@@ -15,6 +15,7 @@ Tools used:
 1. Clean code
     - Good names
     - Good Constructors
+    - Good methods
 2. Defensive coding
 3. Refactoring
 4. SOLID design principles
@@ -76,7 +77,7 @@ class CommonService { // what does this service do?
 }
 ```
 
-**Class names**
+> Class names
 
 Classes and objects should have **noun** or noun phrase names. A class name should NOT be a verb. For ex: Customer, Dog,
 House, WikiPage, Account, AddressParser, OrderAlgo, EmailSender etc.
@@ -195,7 +196,7 @@ class HttpClientBuilder {
 }
 ```
 
-**Variable names**
+> Variable names
 
 Variables in Java capture the state of the object created from a class. The name of the variable should describe the
 intent of the variable clearly.
@@ -217,7 +218,7 @@ Map<Integer, String> data = getStuff(); // what data?
 Map<Integer, String> tradeDetails = getStuff(); // correct - tradeDetails clearly indicates that its about trades data 
 ```
 
-**Method names**
+> Method names
 
 Few guidelines to check:
 
@@ -296,7 +297,7 @@ The most common way to create an object in Java is using `new` operator and call
 the same name as Class name. Sometimes it may be difficult to remember which constructor should be called if there are
 overloaded constructors.
 
-**Static factory methods**
+> Static factory methods
 
 Thus, we can also have **static factory methods** instead of constructors with **meaning-full names** to return a new
 object.
@@ -332,7 +333,7 @@ String.valueOf(true);
 LocalDate.of(2023, Month.JULY, 01);
 ```
 
-**Constructor Chaining**
+> Constructor Chaining
 
 Constructor chaining is the process of calling a sequence of constructors. We can do it in two ways:
 
@@ -410,5 +411,157 @@ public NewOrder(final Long orderId, final String symbol, final Integer quantity,
 Chaining constructors makes code more readable. We don't have to repeat attribute assignments throughout all
 constructors. Instead, we do this in one place.
 
-**Constructor Telescoping**
+> Constructor Telescoping
+
+> Interview Problem 1 (Barclays): Explain Telescoping Constructor Pattern and how to resolve it.
+
+Static factories and constructors share a limitation: they do not scale well to **large numbers** of optional
+parameters. For ex: if we consider a class `Pizza` with several constructors:
+
+```
+Pizza(int size) { ... }        
+Pizza(int size, boolean cheese) { ... }    
+Pizza(int size, boolean cheese, boolean pepperoni) { ... }    
+Pizza(int size, boolean cheese, boolean pepperoni, boolean bacon) { ... }
+```
+
+Only `size` is the **mandatory** field but all the other fields are **optional**.
+
+Once constructors are 4 or 5 parameters long, it becomes difficult to remember the required **order of the parameters**
+as well as what particular constructor we might want in a given situation.
+
+It is hard to write client code when there are many parameters, and harder still to read it.
+
+This is called the **Telescoping Constructor Pattern**.
+
+Here comes the **Builder pattern** to rescue. Instead of making the desired object directly, the client calls a
+constructor (or static factory) with all the **required** parameters and gets a **builder** object. Then the client
+calls setter-like methods on the builder object to set each optional parameter of interest. Finally, the client calls a
+parameterless build method to generate the object, which is typically **immutable**. The builder is typically a `static`
+member class of the class it builds.
+
+```java
+// Builder Pattern
+public class Pizza {
+
+    private int size; // required
+    private boolean cheese;
+    private boolean pepperoni;
+    private boolean bacon;
+
+    public static class Builder {
+        //required
+        private final int size;
+
+        //optional
+        private boolean cheese = false;
+        private boolean pepperoni = false;
+        private boolean bacon = false;
+
+        public Builder(int size) {
+            this.size = size;
+        }
+
+        public Builder cheese(boolean value) {
+            cheese = value;
+            return this;
+        }
+
+        public Builder pepperoni(boolean value) {
+            pepperoni = value;
+            return this;
+        }
+
+        public Builder bacon(boolean value) {
+            bacon = value;
+            return this;
+        }
+
+        public Pizza build() {
+            return new Pizza(this);
+        }
+    }
+
+    private Pizza(Builder builder) {
+        size = builder.size;
+        cheese = builder.cheese;
+        pepperoni = builder.pepperoni;
+        bacon = builder.bacon;
+    }
+
+}
+```
+
+Code snippet to use builder pattern:
+
+```
+Pizza pizza = new Pizza.Builder(12)
+                       .cheese(true)
+                       .pepperoni(true)
+                       .bacon(true)
+                       .build();
+```
+
+This client code is easy to write and, more importantly, easy to read.
+
+The `Pizza` class is **immutable**, and all parameter default values are in one place. The builder’s setter methods
+return the builder itself so that invocations can be chained, resulting in a _fluent_ API.
+
+#### Good methods
+
+Methods should be simple doing only one thing with no complexities. Often, lower complexity often means better code.
+
+> Return empty collections or arrays, not nulls
+
+For example: consider a method like this.
+
+```
+    public List<String> getSomeData() {
+        try {
+            // read from DB 
+        } catch (Exception e) {
+            // operation failed
+            return null;
+        }
+    }
+```
+
+When the operation fails, it returns `null`. Now, the client code will suffer a lot - this method may lead to either
+`NullPointerException` and client needs to discover it and handle it OR do lots of **null checks**: `if (list != null)`.
+This will result in lots of code clutter and complexity, and we should avoid this.
+
+Thus, instead of returning `null`, we should return `Collections.emptyList()`. If we were returning a set, we’d use
+`Collections.emptySet()`; if we were returning a map, we’d use `Collections.emptyMap()`.
+
+Similar care should be taken to NOT return some **magic numbers** like -1, 0, 1, etc. making the client code keep
+guessing what does it mean.
+
+**Bad method** returning -1 as magic number:
+
+```
+    public int withdraw(int amount) {
+        if (amount > balance) {
+            return -1;
+        }
+        else {
+            balance -= amount;
+            return 0;
+        }
+    }
+```
+
+**Clean method** throwing exception for insufficient balance:
+
+```
+    public void withdraw(int amount) throws
+            IllegalStateException {
+        if (amount > balance) {
+            throw new IllegalStateException();
+        }
+        balance -= amount;
+    }
+```
+
+
+
 
