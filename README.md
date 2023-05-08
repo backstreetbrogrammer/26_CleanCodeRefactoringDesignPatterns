@@ -16,7 +16,7 @@ Tools used:
     - Good names
     - Good Constructors
     - Good methods
-2. Defensive coding
+2. Cleaner code with defensive coding
 3. Refactoring
 4. SOLID design principles
 5. Design patterns
@@ -536,7 +536,7 @@ Thus, instead of returning `null`, we should return `Collections.emptyList()`. I
 Similar care should be taken to NOT return some **magic numbers** like -1, 0, 1, etc. making the client code keep
 guessing what does it mean.
 
-**Bad method** returning -1 as magic number:
+**Bad method** returning -1 and 0 as magic numbers:
 
 ```
     public int withdraw(int amount) {
@@ -553,8 +553,7 @@ guessing what does it mean.
 **Clean method** throwing exception for insufficient balance:
 
 ```
-    public void withdraw(int amount) throws
-            IllegalStateException {
+    public void withdraw(int amount) throws IllegalStateException {
         if (amount > balance) {
             throw new IllegalStateException();
         }
@@ -562,6 +561,78 @@ guessing what does it mean.
     }
 ```
 
+Exceptions should be reserved for exceptional conditions. There is another approach to writing methods that may not be
+able to return a value.
 
+The `Optional<T>` class represents an immutable container that can hold either a single non-null `T` reference or
+nothing at all.
 
+A method that conceptually returns a `T` but may be unable to do so under certain circumstances can instead be declared
+to return an `Optional<T>`. This allows the method to return an empty result to indicate that it could NOT return a
+valid result. An Optional-returning method is more flexible and easier to use than one that throws an exception, and it
+is less error-prone than one that returns null.
+
+For ex: suppose we have a method as below:
+
+```
+    // Returns maximum value in collection - throws exception if empty
+    public static <E extends Comparable<E>> E max(Collection<E> c) {
+        if (c.isEmpty())
+            throw new IllegalArgumentException("Empty collection");
+        E result = null;
+        for (E e : c)
+            if (result == null || e.compareTo(result) > 0)
+                result = Objects.requireNonNull(e);
+        return result;
+    }
+```
+
+This method throws an `IllegalArgumentException` if the given collection is empty. A better alternative would be to
+return `Optional<E>`.
+
+```
+    // Returns maximum value in collection as an Optional<E>
+    public static <E extends Comparable<E>> Optional<E> max(Collection<E> c) {
+        if (c.isEmpty())
+            return Optional.empty();
+        E result = null;
+        for (E e : c)
+            if (result == null || e.compareTo(result) > 0)
+                result = Objects.requireNonNull(e);
+        return Optional.of(result);
+    }
+```
+
+We use two: `Optional.empty()` returns an **empty** optional, and `Optional.of(value)` returns an optional containing
+the given **non-null** value.
+
+It is a programming error to pass null to `Optional.of(value)`. If we do this, the method responds by throwing
+a `NullPointerException`. The `Optional.ofNullable(value)` method accepts a possibly **null** value and returns an empty
+optional if null is passed in.
+
+Never return a null value from an Optional-returning method: it defeats the entire purpose of the facility.
+
+> Reduce number of arguments to maximum 3
+
+Fewer method arguments are better and clean. Methods with more than 3 arguments means:
+
+- method is doing more than 1 thing - split it
+- take too many primitive types - wrap it into an object and pass that object instead
+- takes a boolean flag - split it into 2 methods with each implemented for TRUE and FALSE
+
+> Always validate the method arguments first before writing any method implementation
+
+Before we should write any method implementation, at the very first line => we should validate the method arguments
+passed. This will help to **fail-fast** if arguments are invalid.
+
+For ex:
+
+```
+    public void withdraw(int amount) {
+        if(amount <= 0) {
+            throw new IllegalArgumentException("withdrawing amount can not be <= 0");
+        } 
+        // rest of the method 
+    }
+```
 
