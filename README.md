@@ -13,9 +13,10 @@ Tools used:
 ## Table of contents
 
 1. Clean code
-    - Good names
+    - Good Names
     - Good Constructors
-    - Good methods
+    - Good Methods
+    - Good Exceptions
 2. Cleaner code with defensive coding
 3. Refactoring
 4. SOLID design principles
@@ -61,7 +62,7 @@ it easier to write." ~ **Robert Martin**
 - Lower job satisfaction: more time spent on reading or understanding the code and solving production issues rather than
   writing real good development projects
 
-#### Good names
+#### Good Names
 
 Following good naming conventions can go a long way in making our code readable and maintainable.
 
@@ -507,7 +508,7 @@ This client code is easy to write and, more importantly, easy to read.
 The `Pizza` class is **immutable**, and all parameter default values are in one place. The builder’s setter methods
 return the builder itself so that invocations can be chained, resulting in a _fluent_ API.
 
-#### Good methods
+#### Good Methods
 
 Methods should be simple doing only one thing with no complexities. Often, lower complexity often means better code.
 
@@ -635,4 +636,113 @@ For ex:
         // rest of the method 
     }
 ```
+
+#### Good Exceptions
+
+When used to best advantage, exceptions can improve a program’s readability, reliability, and maintainability. When used
+improperly, they can have the opposite effect.
+
+> Use exception for only exceptional conditions
+
+For ex:
+
+```
+        final Mountain range[] = new Mountain[10];
+        
+        // Horrible abuse of exceptions. Don't ever do this!
+        try {
+            int i = 0;
+            while (true)
+                range[i++].climb();
+        } catch (ArrayIndexOutOfBoundsException e) {
+        }
+```
+
+The above bad code has an infinite loop which terminates by throwing, catching, and ignoring an
+`ArrayIndexOutOfBoundsException` when it attempts to access the first array element outside the bounds of the array.
+
+Thus, after the 10th element is accessed, for the 11th element - it will throw `ArrayIndexOutOfBoundsException` and
+simply ignore and move out of it.
+
+The same code could be written as:
+
+```
+        for (Mountain m : range)
+            m.climb();
+```
+
+So, use exception for ONLY exceptional conditions => not for normal work flow.
+
+> Do not catch or handle unchecked exceptions as these are programming errors. Instead, use checked exceptions for
+> recoverable conditions and runtime exceptions for programming errors.
+
+![Exceptions](Exceptions.PNG)
+
+Java provides 3 kinds of throwables: checked exceptions, runtime exceptions (unchecked), and errors (unchecked).
+
+The cardinal rule in deciding whether to use a checked or an unchecked exception is this: **Use checked exceptions for
+conditions from which the caller can reasonably be expected to recover.**
+
+By throwing a checked exception, we force the caller **to handle the exception in a catch clause** or to propagate it
+outward.
+
+For ex:
+
+```
+        File file = new File("myFile.txt");
+        try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file))) {
+            // read a file
+        } catch (IOException e) {
+            //log.error(e);
+        }
+```
+
+Here, `IOException` is a checked exception and compiler forces to handle it in try-catch block. But this is NOT a
+programming error - it all depends on whether the file is present or not while we are reading it.
+
+For all the pre-conditions we checked before, related to invalid arguments passed to a method or a constructor => these
+are programming errors and should NOT be handled and code should fail to execute.
+
+For ex:
+
+```
+    public void withdraw(int amount) {
+        if(amount <= 0) {
+            throw new IllegalArgumentException("withdrawing amount can not be <= 0");
+        } 
+        // rest of the method 
+    }
+```
+
+Here, `IllegalArgumentException` is a `RuntimeException` (unchecked) and indicates a programming error - invalid
+argument being passed to the method. Thus, caller of this method SHOULD get this exception back and SHOULD not be able
+to execute the method with invalid arguments.
+
+**Catch block**
+
+Catch Block should NOT:
+
+- be empty
+- have only comments
+- only print stack trace
+
+Catch Block should:
+
+- log the error
+- throw new custom exception
+- be specific - for ex, don't use just `Exception` class => use the specific exception class
+
+```
+// Bad code
+catch { }
+catch { // should never happen }
+catch { return null; }
+catch { e.printStackTrace(); }
+
+// Clean code
+catch { log.error(e); }
+catch { throw new CustomException(e); }
+```
+
+**Finally block**
 
