@@ -17,6 +17,7 @@ Tools used:
     - Good Constructors
     - Good Methods
     - Good Exceptions
+    - Good Class organization
 2. Cleaner code with defensive coding
 3. Refactoring
 4. SOLID design principles
@@ -746,3 +747,49 @@ catch { throw new CustomException(e); }
 
 **Finally block**
 
+> Avoid exceptions in finally block
+
+Exceptions should be thrown and handled in try-catch block. `finally` block is only intended to run the last code which
+is ALWAYS supposed to run.
+
+```
+    public static void main(String[] args) {
+        try {
+            Object result = null;
+            System.out.println(result.toString()); // NullPointerException
+        } finally {
+            cleanup();
+        }
+    }
+
+    private static void cleanup() {
+        throw new IllegalStateException();
+    }
+```
+
+Output:
+
+```
+Exception in thread "main" java.lang.IllegalStateException
+	at com.backstreetbrogrammer.ch01_cleancode.exceptions.FinallyDemo.cleanup(FinallyDemo.java:15)
+	at com.backstreetbrogrammer.ch01_cleancode.exceptions.FinallyDemo.main(FinallyDemo.java:10)
+```
+
+Instead of throwing NPE, program is throwing `IllegalStateException` as `finally` block is overriding the actual
+exception being thrown in the code.
+
+> Always use try-with-resources, and then we can avoid using finally block
+
+```
+    void readFile() {
+        try (Scanner scanner = new Scanner(new File("file.txt"))) {
+            // read file
+        } catch (final FileNotFoundException e) {
+            // log the exception
+        } // NO need of finally block to close the file
+    }
+```
+
+In the above code snippet, there is no need to explicitly call the `finally` block to close the resources.
+
+#### Good Class organization
