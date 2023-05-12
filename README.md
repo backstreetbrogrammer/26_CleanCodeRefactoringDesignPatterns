@@ -12,12 +12,13 @@ Tools used:
 
 ## Table of contents
 
-1. Clean code
-    - Good Names
-    - Good Constructors
-    - Good Methods
-    - Good Exceptions
-    - Good Class organization
+1. [Clean code](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#chapter-01-clean-code)
+    - [Good Names](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-names)
+    - [Good Constructors](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-constructors)
+    - [Good Methods](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-exceptions)
+    - [Good Exceptions](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-exceptions)
+    - [Good Class organization](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-class-organization)
+    - Good code style
 2. Cleaner code with defensive coding
 3. Refactoring
 4. SOLID design principles
@@ -793,3 +794,176 @@ exception being thrown in the code.
 In the above code snippet, there is no need to explicitly call the `finally` block to close the resources.
 
 #### Good Class organization
+
+> SRP - Single Responsibility Principle
+
+For **methods**, we learned that it should adhere to SRP => meaning it should only do ONE thing.
+
+However, for **classes**, the definition of SRP is little different:
+
+- if a class does only ONE thing => it may result in a lot of very small classes in the codebase making it fragile and
+  spaghetti-like code
+- thus, better definition for SRP applied to class is => it should have ONLY one reason to change
+
+For ex:
+
+```java
+public class Student {
+
+    private int id;
+    private String name;
+    private String semester;
+
+    // Getter and Setters
+
+    // Unrelated methods
+    double feesCalculator() {
+    }
+
+    void sendEmail() {
+    }
+}
+```
+
+In the above class, `feesCalculator()` and `sendEmail()` are totally unrelated methods for the `Student` class. Student
+class should have ONLY one reason to change, i.e. when a new attribute is added for a Student - say hostel number,
+courses enrolled, home address etc.
+
+Fees calculation and sending email by different services or classes.
+
+```java
+public class Student {
+
+    private int id;
+    private String name;
+    private String semester;
+
+    // Getter and Setters
+}
+```
+
+```java
+public class FeesCalculator {
+    private double tuitionFees;
+    private double libraryFees;
+    // etc.
+
+    double feesCalculator(Student student) {
+    }
+
+}
+```
+
+```java
+public class EmailService {
+    private String mailTo;
+    private String mailFrom;
+    // etc.
+
+    void sendEmail(Student sender, Student receiver) {
+    }
+
+}
+```
+
+> Cohesion: refers to the degree to which elements within a class or a module belong together to fulfill a single, well-defined purpose.
+
+**High cohesion** means that elements are closely related and focused on a single purpose, while **low cohesion** means
+that elements are loosely related and serve multiple purposes.
+
+A cohesive class is:
+
+- fields and methods are co-dependent (like getters and setters)
+- methods that use multiple class fields and other class methods
+
+Thus, we should strive for **High Cohesion** in classes, packages, modules and whole systems.
+
+> Coupling: degree of interdependence between software modules or classes, a measure of how interconnected they are.
+
+```java
+public class A {
+    private B b = new B(); // A coupled with B
+}
+```
+
+**Tight coupling - Bad**
+
+If we have too many couplings in a class, a single small change in one class will require many more changes in all the
+coupled classes. This leads to highly unmaintainable code!
+
+**Loose coupling - Good**
+
+Change in one class requires none or minimum changes in other classes.
+
+![Cohesion and Coupling](CohesionCoupling.PNG)
+
+Thus, to reduce coupling:
+
+- follow SRP
+- increase cohesion
+- program to an interface
+- maintain strong encapsulation
+- use dependency injection
+
+```
+    // Not programming to an Interface
+    LinkedList<String> list = new LinkedList<>();
+
+    void actOnFirst(LinkedList<String> list) {
+        String firstElem = list.getFirst();
+    }
+
+    void actOnLast(LinkedList<String> list) {
+        String lastElem = list.getLast();
+    }
+
+```
+
+If we want to change from `LinkedList` to `ArrayList` => I need to make changes at multiple places. Also, `getFirst()`
+and `getLast()` are not present in `ArrayList` - so I need to change it too. Like, `list.get(0)` for `getFirst()` and
+`list.get(list.size() - 1)` for `getLast()`.
+
+Thus, **programming to an interface** will be better and more maintainable.
+
+```
+    // Programming to an Interface
+    List<String> list = new ArrayList<>();
+
+    void actOnFirst(List<String> list) {
+        String firstElem = list.get(0);
+    }
+
+    void actOnLast(List<String> list) {
+        String lastElem = list.get(list.size() - 1);
+    }
+```
+
+Now, if we want to change from `ArrayList` to `LinkedList` => we only need to change one word.
+
+**Maintain strong encapsulation**
+
+Try to make class members and fields as restrictive as possible - private, avoid getters/setters etc. Only API methods
+meant for client should be made public.
+
+```java
+public class A {
+    private String algorithm; // for internal calculation only
+    private int b;
+
+    public void doSomething() {
+        applyAlgorithm();
+    }
+
+    // do NOT mark it as public
+    private void applyAlgorithm() {
+        //...
+    }
+
+    // do NOT provide this getter 
+    public String getAlgorithm() {
+        return algorithm;
+    }
+}
+```
+
+#### Good code style
