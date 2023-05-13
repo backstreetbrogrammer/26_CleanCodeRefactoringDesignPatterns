@@ -18,11 +18,13 @@ Tools used:
     - [Good Methods](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-exceptions)
     - [Good Exceptions](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-exceptions)
     - [Good Class organization](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-class-organization)
-    - Good code style
-2. Cleaner code with defensive coding
-3. Refactoring
-4. SOLID design principles
-5. Design patterns
+    - [Good code style](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-code-style)
+    - [Good comments](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-comments)
+2. [Maintaining Clean Code](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#chapter-02-maintaining-clean-code)
+3. Cleaner code with defensive coding
+4. Refactoring
+5. SOLID design principles
+6. Design patterns
 
 ---
 
@@ -967,3 +969,167 @@ public class A {
 ```
 
 #### Good code style
+
+Clean code is all about **readability** and **maintainability**.
+
+If the whole project or the whole team or the whole company is following certain code style (also called **checkstyle**
+in IntelliJ), it would definitely benefit **readability**. Almost all the tech-companies today follow a certain code
+style in its projects.
+
+Various major companies have defined their Java style guide as such:
+
+- [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html)
+- [Oracle Java Style Guide](https://www.oracle.com/java/technologies/javase/codeconventions-contents.html)
+- [Twitter Java Style Guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md)
+
+#### Good comments
+
+The proper use of comments is to compensate for our failure to express ourselves in code.
+~ **Robert C. Martin**
+
+> Avoid useless comments
+
+For ex: There is no need of these comments in the below `Student` class.
+
+```java
+public class Student {
+
+    private int id;
+    private String name;
+    private int age; // Student's age - useless
+    private String semester;
+
+    // Getter and Setters
+    public int getId() {
+        return id;
+    }
+
+    // Get Students name - useless
+    public String getName() {
+        return name;
+    }
+
+    public static void main(String[] args) {
+        List<Course> courses = new ArrayList<>();
+
+        // loop through courses - useless
+        for (Course course : courses) {
+            if (course.getTitle().equals("Java")) {
+                System.out.println("my favorite course");
+            }
+        }
+    }
+
+}
+```
+
+> Don’t comment bad code – rewrite it!
+
+```java
+public class Course {
+
+    private int cn; // course number - BAD comment
+    private int courseNumber; // remove cn and just give correct field name as courseNumber
+
+    public String getCourseInfo(Course course, int uuid) {
+        if (systemIsUp) {
+            if (course != null && course.getTitle().equals("")) {
+                return "Invalid Name";
+            }
+            return "System is down at the moment";
+        } // end of first if statement - BAD comment
+        return course.getInfo();
+    }
+
+}
+```
+
+**Code smell**
+
+Any characteristic in the source code of a program that possibly indicates a deeper problem.
+
+```
+// Fixed a complex bug on 26th June by "Ninja Coder"
+// Optimized perf on 3rd of March
+// TODO
+public String superComplexMethod(){
+    // ...
+}
+```
+
+All the above comments are BAD and should be avoided.
+
+**Bad TODOs**
+
+```
+// TODO
+// TODO - by end of month
+// TODO: Fix this method
+// Commented out code with TODO
+```
+
+For ex: avoid such nasty TODOs
+
+```java
+public class Course {
+
+    public String getCourseInfo(Course course, int uuid) {
+        // if (systemIsUp) { TODO - fix this
+        // if (course != null && course.getTitle().equals("")) {
+        //      return "Invalid Name";
+        //  }
+        return "System is down at the moment";
+    }
+
+}
+```
+
+These are the **good comments**:
+
+- JavaDocs
+- Comments for third party library API code which is not readable
+- TODOs with a JIRA number or Bug Tracking number
+
+---
+
+### Chapter 02. Maintaining Clean Code
+
+Bad way to maintain code: Write code and then merge it.
+
+Good way to maintain code:
+
+Define good coding standard or rules -> write code -> static code analysis -> peer code review -> merge
+
+**Define good coding standard or rules**
+
+These can be defined by the senior developers or code gatekeepers or system architects which needs to be adhere to while
+writing the code. This includes custom `checkstyle` as well.
+
+**Static code analysis**
+
+> "Fix issues before they exist." ~ **SonarLint**
+
+One of the best static code checkers is: [SonarLint](https://docs.sonarcloud.io/improving/sonarlint/)
+
+SonarLint can be installed as a plugin in IntelliJ, and it can provide all the static code analysis and fixes on fly.
+
+**Boy Scout Rule**
+
+Leave the ~~campground~~ code cleaner than you found it.
+
+It means that if we can find an existing dirty code, and it will take less time to fix it => then fix it.
+
+By doing such incremental fixes, in a long run => it will make the code cleaner and maintainable.
+
+If it takes MORE time to fix it => raise a JIRA and comment it with TODO.
+
+**Peer code review**
+
+- At least two reviewers
+- At least one person understands the business side of the code under review
+- Merging not possible until all highlighted issues addressed
+
+All the above features are present in **GitHub**, **Bitbucket**, etc.
+
+We can also include **pair programming** for new developers with senior developers in the initial projects.
+
