@@ -89,7 +89,25 @@ House, WikiPage, Account, AddressParser, OrderAlgo, EmailSender etc.
 
 It should be **specific** as well.
 
-For example, class `CommonUtils` contains util methods for "anything" (number, String, time, etc.), and it is too broad.
+For example, just check the below code snippet:
+
+```
+        // poor variable name
+        HttpResponse r = new Client().send("https://github.com/backstreetbrogrammer/");
+        System.out.println(r.getStatusLine().getStatusCode());
+```
+
+"Client" has many meanings, we have to look inside to realize that. If it is an `HttpClient` or `WebSocket` client
+or `FTP` client, etc. - so the class name can be improved.
+
+```
+        // good variable name
+        HttpResponse response = new WebHttpClient().sendGet("https://github.com/backstreetbrogrammer/");
+        System.out.println(response.getStatusLine().getStatusCode());
+```
+
+Another example, class `CommonUtils` contains util methods for "anything" (number, String, time, etc.), and it is too
+broad.
 
 ```java
 import java.time.Instant;
@@ -514,7 +532,7 @@ return the builder itself so that invocations can be chained, resulting in a _fl
 
 #### Good Methods
 
-Methods should be simple doing only one thing with no complexities. Often, lower complexity often means better code.
+Methods should be simple doing only one thing with no complexities. Often, lower complexity means better code.
 
 > Return empty collections or arrays, not nulls
 
@@ -1086,9 +1104,25 @@ public class Course {
 
 These are the **good comments**:
 
-- JavaDocs
+- JavaDocs - only for public methods or API
 - Comments for third party library API code which is not readable
 - TODOs with a JIRA number or Bug Tracking number
+
+```
+    /**
+     * Send order using the given trading algorithm.
+     * @param algorithmName
+     * @return
+     */
+    public boolean sendOrder(String algorithmName){
+        // implementation
+        return true;
+    }
+```
+
+Java API is full of JavaDocs giving very clear documentation about the method.
+
+![List interface](ListInterfaceJavaDocs.PNG)
 
 ---
 
