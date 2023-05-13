@@ -22,7 +22,7 @@ Tools used:
     - [Good comments](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-comments)
 2. [Maintaining Clean Code](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#chapter-02-maintaining-clean-code)
 3. Cleaner code with defensive coding
-4. Refactoring
+4. [Refactoring](https://github.com/backstreetbrogrammer/27_Refactoring)
 5. SOLID design principles
 6. Design patterns
 
