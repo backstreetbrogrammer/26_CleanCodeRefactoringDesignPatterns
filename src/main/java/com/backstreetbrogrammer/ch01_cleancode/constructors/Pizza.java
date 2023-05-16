@@ -16,21 +16,21 @@ public class Pizza {
         private boolean pepperoni = false;
         private boolean bacon = false;
 
-        public Builder(int size) {
+        public Builder(final int size) {
             this.size = size;
         }
 
-        public Builder cheese(boolean value) {
+        public Builder cheese(final boolean value) {
             cheese = value;
             return this;
         }
 
-        public Builder pepperoni(boolean value) {
+        public Builder pepperoni(final boolean value) {
             pepperoni = value;
             return this;
         }
 
-        public Builder bacon(boolean value) {
+        public Builder bacon(final boolean value) {
             bacon = value;
             return this;
         }
@@ -40,7 +40,7 @@ public class Pizza {
         }
     }
 
-    private Pizza(Builder builder) {
+    private Pizza(final Builder builder) {
         size = builder.size;
         cheese = builder.cheese;
         pepperoni = builder.pepperoni;

@@ -2,9 +2,9 @@ package com.backstreetbrogrammer.ch01_cleancode.exceptions;
 
 public class FinallyDemo {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         try {
-            Object result = null;
+            final Object result = null;
             System.out.println(result.toString()); // NullPointerException
         } finally {
             cleanup();

@@ -11,7 +11,7 @@ public class CommonUtils {
         return Math.sqrt(num) + 1D;
     }
 
-    public static int generateRandomNumberBetween(int low, int high) {
+    public static int generateRandomNumberBetween(final int low, final int high) {
         return ThreadLocalRandom.current().nextInt(high - low) + low;
     }
 

@@ -23,8 +23,8 @@ Tools used:
 2. [Maintaining Clean Code](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#chapter-02-maintaining-clean-code)
 3. Cleaner code with defensive coding
 4. [Refactoring](https://github.com/backstreetbrogrammer/27_Refactoring)
-5. SOLID design principles
-6. Design patterns
+5. [SOLID design principles](https://github.com/backstreetbrogrammer/28_SOLID)
+6. [Design patterns](https://github.com/backstreetbrogrammer/29_DesignPatterns)
 
 ---
 
@@ -121,7 +121,7 @@ public class CommonUtils {
         return Math.sqrt(num) + 1D;
     }
 
-    public static int generateRandomNumberBetween(int low, int high) {
+    public static int generateRandomNumberBetween(final int low, final int high) {
         return ThreadLocalRandom.current().nextInt(high - low) + low;
     }
 
@@ -157,7 +157,7 @@ public class NumberUtils {
         return Math.sqrt(num) + 1D;
     }
 
-    public static int generateRandomNumberBetween(int low, int high) {
+    public static int generateRandomNumberBetween(final int low, final int high) {
         return ThreadLocalRandom.current().nextInt(high - low) + low;
     }
 }
@@ -481,21 +481,21 @@ public class Pizza {
         private boolean pepperoni = false;
         private boolean bacon = false;
 
-        public Builder(int size) {
+        public Builder(final int size) {
             this.size = size;
         }
 
-        public Builder cheese(boolean value) {
+        public Builder cheese(final boolean value) {
             cheese = value;
             return this;
         }
 
-        public Builder pepperoni(boolean value) {
+        public Builder pepperoni(final boolean value) {
             pepperoni = value;
             return this;
         }
 
-        public Builder bacon(boolean value) {
+        public Builder bacon(final boolean value) {
             bacon = value;
             return this;
         }
@@ -505,7 +505,7 @@ public class Pizza {
         }
     }
 
-    private Pizza(Builder builder) {
+    private Pizza(final Builder builder) {
         size = builder.size;
         cheese = builder.cheese;
         pepperoni = builder.pepperoni;
@@ -868,7 +868,7 @@ public class FeesCalculator {
     private double libraryFees;
     // etc.
 
-    double feesCalculator(Student student) {
+    double feesCalculator(final Student student) {
     }
 
 }
@@ -880,7 +880,7 @@ public class EmailService {
     private String mailFrom;
     // etc.
 
-    void sendEmail(Student sender, Student receiver) {
+    void sendEmail(final Student sender, final Student receiver) {
     }
 
 }
@@ -1027,11 +1027,11 @@ public class Student {
         return name;
     }
 
-    public static void main(String[] args) {
-        List<Course> courses = new ArrayList<>();
+    public static void main(final String[] args) {
+        final List<Course> courses = new ArrayList<>();
 
         // loop through courses - useless
-        for (Course course : courses) {
+        for (final Course course : courses) {
             if (course.getTitle().equals("Java")) {
                 System.out.println("my favorite course");
             }
@@ -1049,7 +1049,7 @@ public class Course {
     private int cn; // course number - BAD comment
     private int courseNumber; // remove cn and just give correct field name as courseNumber
 
-    public String getCourseInfo(Course course, int uuid) {
+    public String getCourseInfo(final Course course, final int uuid) {
         if (systemIsUp) {
             if (course != null && course.getTitle().equals("")) {
                 return "Invalid Name";
@@ -1091,7 +1091,7 @@ For ex: avoid such nasty TODOs
 ```java
 public class Course {
 
-    public String getCourseInfo(Course course, int uuid) {
+    public String getCourseInfo(final Course course, final int uuid) {
         // if (systemIsUp) { TODO - fix this
         // if (course != null && course.getTitle().equals("")) {
         //      return "Invalid Name";

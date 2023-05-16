@@ -9,7 +9,7 @@ public class MethodsDemo {
     public List<String> getSomeData() {
         try {
             // read from DB
-        } catch (Exception e) {
+        } catch (final Exception e) {
             // operation failed
             // return null;
             return Collections.emptyList();
@@ -17,7 +17,7 @@ public class MethodsDemo {
         return new ArrayList<>();
     }
 
-    public int withdraw(int amount) {
+    public int withdraw(final int amount) {
         if (amount > balance) {
             return -1;
         } else {
@@ -26,7 +26,7 @@ public class MethodsDemo {
         }
     }
 
-    public void withdrawBetter(int amount) throws
+    public void withdrawBetter(final int amount) throws
             IllegalStateException {
         if (amount > balance) {
             throw new IllegalStateException();
@@ -35,22 +35,22 @@ public class MethodsDemo {
     }
 
     // Returns maximum value in collection - throws exception if empty
-    public static <E extends Comparable<E>> E max(Collection<E> c) {
+    public static <E extends Comparable<E>> E max(final Collection<E> c) {
         if (c.isEmpty())
             throw new IllegalArgumentException("Empty collection");
         E result = null;
-        for (E e : c)
+        for (final E e : c)
             if (result == null || e.compareTo(result) > 0)
                 result = Objects.requireNonNull(e);
         return result;
     }
 
     // Returns maximum value in collection as an Optional<E>
-    public static <E extends Comparable<E>> Optional<E> max1(Collection<E> c) {
+    public static <E extends Comparable<E>> Optional<E> max1(final Collection<E> c) {
         if (c.isEmpty())
             return Optional.empty();
         E result = null;
-        for (E e : c)
+        for (final E e : c)
             if (result == null || e.compareTo(result) > 0)
                 result = Objects.requireNonNull(e);
         return Optional.of(result);

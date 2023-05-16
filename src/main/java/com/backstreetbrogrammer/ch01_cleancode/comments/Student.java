@@ -20,10 +20,10 @@ public class Student {
         return name;
     }
 
-    public static void main(String[] args) {
-        List<Course> courses = new ArrayList<>();
+    public static void main(final String[] args) {
+        final List<Course> courses = new ArrayList<>();
         // loop through courses - useless
-        for (Course course : courses) {
+        for (final Course course : courses) {
             if (course.getTitle().equals("Java")) {
                 System.out.println("my favorite course");
             }

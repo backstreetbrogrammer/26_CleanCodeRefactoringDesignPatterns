@@ -11,27 +11,27 @@ public class NutritionFacts {
 
     // Telescoping constructor pattern - does not scale well!
 
-    public NutritionFacts(int servingSize, int servings) {
+    public NutritionFacts(final int servingSize, final int servings) {
         this(servingSize, servings, 0);
     }
 
-    public NutritionFacts(int servingSize, int servings,
-                          int calories) {
+    public NutritionFacts(final int servingSize, final int servings,
+                          final int calories) {
         this(servingSize, servings, calories, 0);
     }
 
-    public NutritionFacts(int servingSize, int servings,
-                          int calories, int fat) {
+    public NutritionFacts(final int servingSize, final int servings,
+                          final int calories, final int fat) {
         this(servingSize, servings, calories, fat, 0);
     }
 
-    public NutritionFacts(int servingSize, int servings,
-                          int calories, int fat, int sodium) {
+    public NutritionFacts(final int servingSize, final int servings,
+                          final int calories, final int fat, final int sodium) {
         this(servingSize, servings, calories, fat, sodium, 0);
     }
 
-    public NutritionFacts(int servingSize, int servings,
-                          int calories, int fat, int sodium, int carbohydrate) {
+    public NutritionFacts(final int servingSize, final int servings,
+                          final int calories, final int fat, final int sodium, final int carbohydrate) {
         this.servingSize = servingSize;
         this.servings = servings;
         this.calories = calories;

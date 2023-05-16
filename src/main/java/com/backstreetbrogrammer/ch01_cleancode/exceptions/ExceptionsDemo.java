@@ -4,7 +4,7 @@ import java.io.*;
 
 public class ExceptionsDemo {
 
-    public static void main(String[] args) {
+    public static void main(final String[] args) {
         final Mountain range[] = new Mountain[10];
         // Horrible abuse of exceptions. Don't ever do this!
         try {
@@ -12,16 +12,16 @@ public class ExceptionsDemo {
             while (true) {
                 range[i++].climb();
             }
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (final ArrayIndexOutOfBoundsException e) {
         }
 
-        for (Mountain m : range)
+        for (final Mountain m : range)
             m.climb();
 
-        File file = new File("myFile.txt");
-        try (BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file))) {
+        final File file = new File("myFile.txt");
+        try (final BufferedInputStream inputStream = new BufferedInputStream(new FileInputStream(file))) {
             // read a file
-        } catch (IOException e) {
+        } catch (final IOException e) {
             //log.error(e);
         }
     }

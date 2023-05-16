@@ -16,7 +16,7 @@ public class Course {
         return String.format("%d~%s~%s", courseNumber, title, info);
     }
 
-    public String getCourseInfo(Course course, int pin) {
+    public String getCourseInfo(final Course course, final int pin) {
         if (systemIsUp) {
             if (course != null && course.getTitle().equals("")) {
                 return "Invalid Name";

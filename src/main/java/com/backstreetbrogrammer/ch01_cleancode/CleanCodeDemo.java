@@ -9,7 +9,7 @@ import java.util.Calendar;
 public class CleanCodeDemo {
 
     public void badCode() {
-        Calendar c = Calendar.getInstance();
+        final Calendar c = Calendar.getInstance();
         c.set(123, 5, 26, 0, 0, 0);
         c.add(13, 60); // adds one minute
         //new Service().wish(c.getTime());
