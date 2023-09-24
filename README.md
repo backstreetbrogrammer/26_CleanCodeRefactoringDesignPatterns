@@ -21,14 +21,12 @@ Tools used:
     - [Good code style](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-code-style)
     - [Good comments](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-comments)
 2. [Maintaining Clean Code](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#chapter-02-maintaining-clean-code)
-3. Cleaner code with defensive coding
-4. [Refactoring](https://github.com/backstreetbrogrammer/27_Refactoring)
-5. [SOLID design principles](https://github.com/backstreetbrogrammer/28_SOLID)
-6. [Design patterns](https://github.com/backstreetbrogrammer/29_DesignPatterns)
+3. [SOLID design principles](https://github.com/backstreetbrogrammer/28_SOLID)
+4. [Design patterns](https://github.com/backstreetbrogrammer/29_DesignPatterns)
 
 ---
 
-### Chapter 01. Clean Code
+## Chapter 01. Clean Code
 
 Bad code:
 
@@ -66,7 +64,7 @@ it easier to write." ~ **Robert Martin**
 - Lower job satisfaction: more time spent on reading or understanding the code and solving production issues rather than
   writing real good development projects
 
-#### Good Names
+### Good Names
 
 Following good naming conventions can go a long way in making our code readable and maintainable.
 
@@ -314,7 +312,7 @@ To summarize, naming classes, methods, variables, is one of the most important f
 | Variables | Descriptive and concise            |
 | Methods   | Reveal intent and no multi-tasking |
 
-#### Good Constructors
+### Good Constructors
 
 The most common way to create an object in Java is using `new` operator and call the constructor. Java constructors have
 the same name as Class name. Sometimes it may be difficult to remember which constructor should be called if there are
@@ -530,7 +528,7 @@ This client code is easy to write and, more importantly, easy to read.
 The `Pizza` class is **immutable**, and all parameter default values are in one place. The builder’s setter methods
 return the builder itself so that invocations can be chained, resulting in a _fluent_ API.
 
-#### Good Methods
+### Good Methods
 
 Methods should be simple doing only one thing with no complexities. Often, lower complexity means better code.
 
@@ -659,7 +657,7 @@ For ex:
     }
 ```
 
-#### Good Exceptions
+### Good Exceptions
 
 When used to best advantage, exceptions can improve a program’s readability, reliability, and maintainability. When used
 improperly, they can have the opposite effect.
@@ -813,7 +811,7 @@ exception being thrown in the code.
 
 In the above code snippet, there is no need to explicitly call the `finally` block to close the resources.
 
-#### Good Class organization
+### Good Class organization
 
 > SRP - Single Responsibility Principle
 
@@ -886,7 +884,8 @@ public class EmailService {
 }
 ```
 
-> Cohesion: refers to the degree to which elements within a class or a module belong together to fulfill a single, well-defined purpose.
+> Cohesion: refers to the degree to which elements within a class or a module belong together to fulfill a single,
+> well-defined purpose.
 
 **High cohesion** means that elements are closely related and focused on a single purpose, while **low cohesion** means
 that elements are loosely related and serve multiple purposes.
@@ -986,7 +985,7 @@ public class A {
 }
 ```
 
-#### Good code style
+### Good code style
 
 Clean code is all about **readability** and **maintainability**.
 
@@ -1000,7 +999,7 @@ Various major companies have defined their Java style guide as such:
 - [Oracle Java Style Guide](https://www.oracle.com/java/technologies/javase/codeconventions-contents.html)
 - [Twitter Java Style Guide](https://github.com/twitter-archive/commons/blob/master/src/java/com/twitter/common/styleguide.md)
 
-#### Good comments
+### Good comments
 
 The proper use of comments is to compensate for our failure to express ourselves in code.
 ~ **Robert C. Martin**
@@ -1126,7 +1125,7 @@ Java API is full of JavaDocs giving very clear documentation about the method.
 
 ---
 
-### Chapter 02. Maintaining Clean Code
+## Chapter 02. Maintaining Clean Code
 
 Bad way to maintain code: Write code and then merge it.
 
