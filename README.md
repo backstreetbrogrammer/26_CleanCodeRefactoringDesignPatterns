@@ -15,7 +15,7 @@ Tools used:
 1. [Clean code](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#chapter-01-clean-code)
     - [Good Names](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-names)
     - [Good Constructors](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-constructors)
-    - [Good Methods](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-exceptions)
+    - [Good Methods](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-methods)
     - [Good Exceptions](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-exceptions)
     - [Good Class organization](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-class-organization)
     - [Good code style](https://github.com/backstreetbrogrammer/26_CleanCodeRefactoringDesignPatterns#good-code-style)
